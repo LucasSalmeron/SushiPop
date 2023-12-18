@@ -1,0 +1,32 @@
+﻿@model SushiPop.Models.Cliente;
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Principal";
+}
+<h2>@Model.Nombre</h2>
+<h1>PANEL DE USUARIO</h1>
+<div>
+     <a asp-area="" asp-controller="Clientes" asp-action="Details" asp-route-id=@Model.Id>DATOS PERSONALES</a>
+</div>
+
+<div>
+    <!--   redirigir a los pedidos-->
+    <a asp-area="" asp-controller="Pedidos" asp-action="Index" asp-route-id=@Model.Id>PEDIDOS</a>
+
+</div>
+
+<div>
+    
+    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index","Home")" method="post">
+        <button type="submit" class="nav-link btn btn-link text-dark">CERRAR SESION</button>
+    </form>
+
+</div>
+
+
+
+@{
+}

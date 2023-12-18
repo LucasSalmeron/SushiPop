@@ -1,0 +1,200 @@
+﻿@model IEnumerable<SushiPop.Models.Pedido>
+
+@using SushiPOP_YA1A_2C2023_G2.DTO;
+@using System.ComponentModel.DataAnnotations;
+@{
+    ViewData["Title"] = "Index";
+}
+<style>
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+
+    .static {
+        position: absolute;
+        background-color: white;
+    }
+
+    .last-col {
+        padding-rigth: 74.5px !important;
+    }
+</style>
+
+<h1>Index</h1>
+
+
+<div class="row">
+    <div class="col-10">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.NroPedido)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FechaCompra)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Subtotal)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.GastoEnvio)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Total)
+                    </th>
+                    <th class="last-col">
+                        @Html.DisplayNameFor(model => model.Estado)
+                    </th>
+                    <th></th>
+                    <th class="static" scope="col">
+                        @Html.DisplayNameFor(model => model.Carrito)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NroPedido)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FechaCompra)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Subtotal)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.GastoEnvio)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Total)
+                        </td>
+                        <td>
+                            @{
+                                string estadoNombre = Enum.GetName(typeof(EstadoPedidoEnum), item.Estado);
+
+                                var displayAttribute = typeof(EstadoPedidoEnum)
+                                .GetField(estadoNombre)
+                                .GetCustomAttributes(typeof(DisplayAttribute), false)
+                                .FirstOrDefault() as DisplayAttribute;
+
+                                string nombre = displayAttribute != null ? displayAttribute.Name : estadoNombre;
+                            }
+
+                            @Html.DisplayFor(modelItem => nombre)
+                        </td>
+                        <td class="last-col">
+                            @if (!User.IsInRole("CLIENTE"))
+                            {
+                                <p>
+                                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                                </p>
+                            }
+                            else
+                            {
+                                <p>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Details</a> |
+                                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                </p>
+
+                            }
+
+                        </td>
+                        <th class="static" scope="row">
+                            <button class="btn btn-primary" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#pedido-@item.Id"
+                                    aria-expanded="false" aria-controls="pedido-@item.Id">
+                                Detalle de carrito
+                            </button>
+                        </th>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @*    @foreach (var item in Model)
+    {
+    <div class="row row-cols-1 row-cols-md-3 g-4 my-5 collapse multi-collapse" id="pedido-@item.Id">
+    @foreach (var carrito in item.Carrito.CarritosItems)
+    {
+    <div class="col">
+    <div class="card flex-row justify-content-between">
+    <div class="col-5">
+    <img src="@(String.IsNullOrEmpty(carrito.Producto.Foto) ? Url.Content("https://img.freepik.com/vector-premium/cocinar-logo-restaurante-logo-cuchara-tenedor-plato_690577-587.jpg?w=740") : carrito.Producto.Foto)" class="card-img-top" alt="@carrito.Producto.Nombre">
+    </div>
+    <div class="col-7">
+    <div class="card-body">
+    <h5 class="card-title">@carrito.Producto.Nombre</h5>
+    <p class="card-text">@carrito.Producto.Descripcion</p>
+    <p class="card-text">Unidades: @carrito.Cantidad</p>
+    <p class="card-text text-decoration-line-through">$ @carrito.Producto.Precio</p>
+    <p class="card-text"> | $ @carrito.PrecioUnitarioConDescuento</p>
+
+    </div>
+    </div>
+    </div>
+    </div>
+    }
+    </div>
+    }*@
+    @foreach (var item in Model)
+    {
+        <div class="row row-cols-1 row-cols-md-3 g-4 my-5 collapse multi-collapse" id="pedido-@item.Id">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Carrito.CarritosItems.FirstOrDefault().ProductoId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Carrito.CarritosItems.FirstOrDefault().PrecioUnitarioConDescuento)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Carrito.CarritosItems.FirstOrDefault().Cantidad)
+                        </th>
+                        <th>
+                            Precio Total
+                        </th>
+
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var carrito in item.Carrito.CarritosItems)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => carrito.Producto.Nombre)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => carrito.PrecioUnitarioConDescuento)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => carrito.Cantidad)
+                            </td>
+                            <td>
+                                @{
+                                    var resultado = carrito.Cantidad * carrito.PrecioUnitarioConDescuento;
+                                }
+                                @Html.DisplayFor(x=> resultado)
+                            </td>
+                            <td>
+                                @*@using (Html.BeginForm("Delete", "CarritoItems", FormMethod.Post))
+                        {
+                        @Html.AntiForgeryToken()
+                        @Html.Hidden("id", carrito.Id)
+                        @Html.Hidden("returnUrl", true)
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                        }*@
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    }

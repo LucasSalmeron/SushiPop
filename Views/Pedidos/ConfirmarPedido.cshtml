@@ -1,0 +1,156 @@
+﻿@model SushiPop.Models.Pedido
+@{
+    ViewData["Title"] = "Confirmar Pedido";
+}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@if (ViewBag.HayCarrito)
+{
+    <h1>Confirmar Pedido</h1>
+
+    <div>
+        <h4>Su Pedido</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.FechaCompra)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FechaCompra)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Subtotal)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Subtotal)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.GastoEnvio)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.GastoEnvio)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Total)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Total)
+            </dd>
+        </dl>
+    </div>
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Carrito.CarritosItems.FirstOrDefault().ProductoId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Carrito.CarritosItems.FirstOrDefault().PrecioUnitarioConDescuento)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Carrito.CarritosItems.FirstOrDefault().Cantidad)
+                </th>
+                <th>
+                    Precio Total
+                </th>
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Carrito.CarritosItems)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Producto.Nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PrecioUnitarioConDescuento)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Cantidad)
+                    </td>
+                    <td>
+                        @{
+                            var resultado = item.Cantidad * item.PrecioUnitarioConDescuento;
+                        }
+                        @Html.DisplayFor(x=> resultado)
+                    </td>
+                    <td>
+                        @using (Html.BeginForm("Delete", "CarritoItems", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.Hidden("id", item.Id)
+                            @Html.Hidden("returnUrl", true)
+                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+    @if (!ViewBag.Confirmado)
+    {
+        <div>
+            <form asp-action="ConfirmarPedido" class="d-inline">
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="NroPedido" />
+                <input type="hidden" asp-for="FechaCompra" />
+                <input type="hidden" asp-for="Subtotal" />
+                <input type="hidden" asp-for="GastoEnvio" />
+                <input type="hidden" asp-for="Total" />
+                <input type="hidden" asp-for="Estado" />
+                <input type="hidden" asp-for="CarritoId" />
+                <input type="submit" value="Confirmar Pedido" class="btn btn-primary" />
+            </form>
+            | 
+            @using (Html.BeginForm("Delete", "Carritos", FormMethod.Post, new { @class = "d-inline" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.Hidden("id", Model.CarritoId)
+                @Html.Hidden("returnUrl", true)
+                <button type="submit" class="btn btn-danger">Eliminar Carrito</button>
+            }
+
+        </div>
+    }
+    else
+    {
+        <h1>Su pedido ha sido enviado!</h1>
+    }
+
+}
+else
+{
+    <h1>Carrito Vacio, agregue Productos!</h1>
+}
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+
+    @if (TempData["SweetAlert"] != null)
+    {
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var sweetAlertData = "@TempData["SweetAlert"].ToString()".split("|");
+
+                Swal.fire({
+                    icon: sweetAlertData[0],
+                    title: sweetAlertData[1],
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            });
+        </script>
+    }
+
+}

@@ -1,0 +1,17 @@
+﻿@model SushiPOP_YA1A_2C2023_G2.DTO.DashboardViewModel;
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "AdminDashboard";
+
+}
+<h1>Dashboard del Admin</h1>
+
+<form class="form-inline" asp-area="" asp-controller ="Empleados" asp-action="Index">
+    <button type="submit" class="nav-link btn btn-link text-dark">LISTA DE EMPLEADOS</button>
+</form>
+
+<form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index","Home")" method="post">
+    <button type="submit" class="nav-link btn btn-link text-dark">CERRAR SESION</button>
+</form>

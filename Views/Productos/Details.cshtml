@@ -1,0 +1,95 @@
+﻿@model SushiPOP_YA1A_2C2023_G2.DTO.Productos.ProductoDTO;
+
+@{
+    ViewData["Title"] = "Detalle de Producto: " + @Model.Nombre;
+}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<h1>Detalle de Producto: @Model.Nombre - @Model.Categoria</h1>
+
+<div class="card mb-3" style="max-width: 540px;">
+    <div class="row g-0">
+        <div class="col-md-4">
+            <img src="@(String.IsNullOrEmpty(Model.Foto) ? Url.Content("https://img.freepik.com/vector-premium/cocinar-logo-restaurante-logo-cuchara-tenedor-plato_690577-587.jpg?w=740") : Model.Foto)" class="img-fluid rounded-start" alt="@Model.Nombre">
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h5 class="card-title">@Model.Nombre</h5>
+                <p class="card-text">@Model.Descripcion</p>
+
+                @if (Model.Stock == 0)
+                {
+                    <p class="card-text"><small class="text-muted">Producto sin stock</small></p>
+                }
+                else
+                {
+                    if (Model.Descuento > 0)
+                    {
+                        <p class="card-text">
+                            <small class="text-muted">Stock: @Model.Stock</small> |
+                            <small class="card-text text-decoration-line-through">$ @Model.Precio</small> |
+                            <small class="card-text">$@Model.Descuento</small>
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="card-text"><small class="text-muted">Stock: @Model.Stock</small> | <small class="text-muted">$@Model.Precio</small></p>
+                    }
+                    if (User.IsInRole("CLIENTE"))
+                    {
+                        <form asp-action="AgregarACarrito" asp-controller="Carritos" asp-route-idProducto="@Model.Id">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="row text-center">
+
+                                <input type="hidden" asp-for="Id" />
+                                <div class="col-3 align-self-center">
+                                    <input name="cantidad" type="number" min="1" max="@Model.Stock" value="1" required />
+                                </div>
+                                <div class="col">
+                                    <button type="submit" class="btn btn-success"><i class="bi bi-bag"></i> Cargar al Carrito</button>
+
+                                </div>
+                            </div>
+                        </form>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@if (User.IsInRole("EMPLEADO"))
+{
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-secondary">Edit</a>
+    </div>
+}
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+
+    @if (TempData["SweetAlert"] != null)
+    {
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var sweetAlertData = "@TempData["SweetAlert"].ToString()".split("|");
+
+                Swal.fire({
+                    icon: sweetAlertData[0],
+                    title: sweetAlertData[1],
+                    showConfirmButton: false,
+                    showCloseButton: true,
+                    position: 'bottom-end'
+                });
+            });
+        </script>
+    }
+
+}

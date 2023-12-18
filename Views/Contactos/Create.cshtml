@@ -1,0 +1,126 @@
+﻿@model SushiPop.Models.Contacto
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+@if (User.IsInRole("EMPLEADO"))
+{
+    <p>Los empleados no pueden enviar mensajes.</p>
+}
+else
+{
+    <h4>Contacto</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create" onsubmit="return validarCampos();">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                @if (User.IsInRole("Cliente"))
+                {
+                    // Obtener datos del cliente desde el modelo
+                    <div class="form-group">
+                        <label asp-for="NombreCompleto" class="control-label"></label>
+                        <input asp-for="NombreCompleto" class="form-control" value="@Model.NombreCompleto" readonly />
+                        <span asp-validation-for="NombreCompleto" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" class="form-control" value="@Model.Email" readonly />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Telefono" class="control-label"></label>
+                        <input asp-for="Telefono" class="form-control" value="@Model.Telefono" readonly />
+                        <span asp-validation-for="Telefono" class="text-danger"></span>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group">
+                        <label asp-for="NombreCompleto" class="control-label"></label>
+                        <input asp-for="NombreCompleto" class="form-control" />
+                        <span asp-validation-for="NombreCompleto" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Telefono" class="control-label"></label>
+                        <input asp-for="Telefono" class="form-control" />
+                        <span asp-validation-for="Telefono" class="text-danger"></span>
+                    </div>
+                }
+
+                <div class="form-group">
+                    <label asp-for="Mensaje" class="control-label"></label>
+                    <input asp-for="Mensaje" class="form-control" />
+                    <span asp-validation-for="Mensaje" class="text-danger"></span>
+                </div>
+               
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        <script>
+            function mostrarModal(mensaje) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: mensaje,
+                });
+            }
+
+            function validarCampos() {
+                var nombreCompleto = $("#NombreCompleto").val();
+                var email = $("#Email").val();
+                var telefono = $("#Telefono").val();
+                var mensaje = $("#Mensaje").val();
+
+                if (!nombreCompleto) {
+                    mostrarModal("Nombre Completo es obligatorio.");
+                    return false;
+                }
+
+                if (!email) {
+                    mostrarModal("Email es obligatorio.");
+                    return false;
+                }
+
+                if (!telefono) {
+                    mostrarModal("Teléfono es obligatorio.");
+                    return false;
+                }
+
+                if (!mensaje) {
+                    mostrarModal("Mensaje es obligatorio.");
+                    return false;
+                }
+
+                return true;
+            }
+
+            $(document).ready(function () {
+                $("form").submit(function () {
+                    return validarCampos();
+                });
+            });
+        </script>
+
+}
+}

@@ -1,0 +1,127 @@
+﻿@model SushiPop.Models.Pedido
+
+@using SushiPOP_YA1A_2C2023_G2.DTO;
+@using System.ComponentModel.DataAnnotations;
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Pedido</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NroPedido)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NroPedido)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FechaCompra)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FechaCompra)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Subtotal)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Subtotal)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.GastoEnvio)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.GastoEnvio)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Total)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Total)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Estado)
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                string estadoNombre = Enum.GetName(typeof(EstadoPedidoEnum), Model.Estado);
+
+                var displayAttribute = typeof(EstadoPedidoEnum)
+                .GetField(estadoNombre)
+                .GetCustomAttributes(typeof(DisplayAttribute), false)
+                .FirstOrDefault() as DisplayAttribute;
+
+                string nombre = displayAttribute != null ? displayAttribute.Name : estadoNombre;
+            }
+
+            @Html.DisplayFor(modelItem => nombre)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Carrito)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Carrito.Id)
+        </dd>
+    </dl>
+    <div class="row">
+        <div class="col-10">
+            <div class="row row-cols-1 row-cols-md-3 g-4 my-5" id="pedido-@Model.Id">
+                <h4>Productos que haz comprado.</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Carrito.CarritosItems.FirstOrDefault().ProductoId)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Carrito.CarritosItems.FirstOrDefault().PrecioUnitarioConDescuento)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Carrito.CarritosItems.FirstOrDefault().Cantidad)
+                            </th>
+                            <th>
+                                Precio Total
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var carrito in Model.Carrito.CarritosItems)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => carrito.Producto.Nombre)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => carrito.PrecioUnitarioConDescuento)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => carrito.Cantidad)
+                                </td>
+                                <td>
+                                    @{
+                                        var resultado = carrito.Cantidad * carrito.PrecioUnitarioConDescuento;
+                                    }
+                                    @Html.DisplayFor(x=> resultado)
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+    <form asp-action="Delete">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

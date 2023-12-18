@@ -1,0 +1,50 @@
+﻿@model SushiPOP_YA1A_2C2023_G2.DTO.Empleados.EditarEmpleadoDTO;
+
+@{
+    ViewData["Title"] = "Editar Empleado: " + @Model.Nombre + " " + @Model.Apellido;
+}
+
+<h1>Editar Empleado:</h1>
+
+<h4>@Model.Nombre @Model.Apellido</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" class="was-validated">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Legajo" />
+            <input type="hidden" asp-for="Nombre" />
+            <input type="hidden" asp-for="Apellido" />
+            <input type="hidden" asp-for="FechaNacimiento" />
+            <input type="hidden" asp-for="Email" />
+            <div class="mb-3">
+                <label asp-for="Direccion" class="form-label"></label>
+                <input asp-for="Direccion" maxlength="100" class="form-control" required />
+                <span asp-validation-for="Direccion" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Telefono" class="form-label"></label>
+                <input asp-for="Telefono" minlength="10" maxlength="10" class="form-control" required />
+                <span asp-validation-for="Telefono" class="text-danger"></span>
+            </div>
+
+            <div class="form-group form-check">
+                <label class="form-check-label" for="flexCheckDefault">
+                    <input class="form-check-input" type="checkbox" asp-for="Activo" /> @Html.DisplayNameFor(model => model.Activo)
+                    <span asp-validation-for="Activo" class="text-danger"></span>
+                </label>
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="Guardar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Principal" asp-route-userEmail = "@Model.Email">VOLVER ATRAS</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

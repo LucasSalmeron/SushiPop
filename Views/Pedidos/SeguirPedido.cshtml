@@ -1,0 +1,40 @@
+﻿@model SushiPop.Models.Pedido
+
+@{
+    ViewData["Title"] = "Seguir Pedido";
+}
+
+<h1>Seguir Pedido</h1>
+
+
+<form asp-action="SeguirPedido" method="post">
+    <div>
+        <label for="NroPedido">Número de Pedido:</label>
+        <input type="text" id="NroPedido" name="NroPedido" required>
+        <span class="text-danger" data-valmsg-for="NroPedido" data-valmsg-replace="true"></span>
+    </div>
+
+    <button type="submit">Consultar</button>
+</form>
+
+@if (!string.IsNullOrEmpty(ViewBag.Error))
+{
+    <p style="margin-top: 10px;"><strong>Error:</strong> @Html.Raw(ViewBag.Error)</p>
+}
+
+@if (!string.IsNullOrEmpty(ViewBag.EstadoPedido))
+{
+    <div>
+        <h2>Resultado de la Consulta</h2>
+        <p>Número de Pedido: @Model.NroPedido</p>
+        <p>Estado del Pedido: @ViewBag.EstadoPedido</p>
+        <!-- Otros detalles del pedido según sea necesario -->
+    </div>
+}
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+   
+}
+

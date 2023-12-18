@@ -1,0 +1,47 @@
+﻿@model SushiPop.Models.Empleado;
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Principal";
+}
+<h1>PANEL DE EMPLEADO</h1>
+<div>
+     <a asp-area="" asp-controller="Empleados" asp-action="Details" asp-route-id=@Model.Id>DATOS PERSONALES</a>
+</div>
+<div>
+    <a asp-area="" asp-controller="Clientes" asp-action="Index" asp-route-id=@Model.Id>LISTA DE CLIENTES</a>
+</div>
+<div>
+    <a asp-area="" asp-controller="Categorias" asp-action="Index" asp-route-id=@Model.Id>CATEGORIAS</a>
+</div>
+<div>
+    <a asp-area="" asp-controller="Productos" asp-action="Index" asp-route-id=@Model.Id>PRODUCTOS</a>
+</div>
+<div>
+   <a asp-area="" asp-controller="Descuentos" asp-action="Index" asp-route-id=@Model.Id>DESCUENTOS</a>
+</div>
+<div>
+    <a asp-area="" asp-controller="Pedidos" asp-action="Index" asp-route-id=@Model.Id>PEDIDOS</a>
+</div>
+<div>
+    <a asp-area="" asp-controller="Reservas" asp-action="Index" asp-route-id=@Model.Id>RESERVAS</a>
+</div>
+<div>
+    <a asp-area="" asp-controller="Reclamos" asp-action="Index" asp-route-id=@Model.Id>MENSAJES</a>
+</div>
+
+
+<div>
+    
+    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index","Home")" method="post">
+        <button type="submit" class="nav-link btn btn-link text-dark">CERRAR SESION</button>
+    </form>
+
+</div>
+
+
+
+@{
+}

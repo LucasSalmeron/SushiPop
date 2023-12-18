@@ -1,0 +1,95 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="hero-image">
+    <img src="~/img/bg_hero.png" alt="promocion del dia" class="complete-images" />
+    <h2 class="hero-text">Hoy <span class="red-text">DD</span> ahorra un <span class="red-text">N%</span> en <a class="red-text" asp-area="" asp-controller="Productos" asp-action="Index">PPP!</a> </h2>
+ </div>
+
+<div class="title">
+    <h2>Los favoritos</h2>
+    <img src="~/img/emoticon_smile.png" />
+</div>
+  
+<div class="mx-auto container"> 
+     <div class="row ">
+        <div class="fav-item col-7 px-0">
+            <img src="~/img/fav_tabla.png" alt="tabla de sushi" style="width: 100%; height:100%"/>
+            <div class="fav-text"> <a asp-area="" asp-controller="Productos" asp-action="Index" class="fav-link">Combo 100% salmon Alaska XL de 40 piezas</a></div>
+         </div>
+        <div class="fav-item col-4 offset-1 px-0">
+            <img src="~/img/fav_postre.png" alt="postre oreo" style="width: 100%" />
+            <div class="fav-text"> <a asp-area="" asp-controller="Productos" asp-action="Index" class="fav-link">Postre helado OREO</a></div>
+        </div>
+     </div>
+    
+     <div class="row my-5">
+        <div class="fav-item col-4 px-0">
+            <img src="~/img/fav_arrolladitos.png" alt="arrolladitos privamera" style="width: 100%" />
+            <div class="fav-text"> <a asp-area="" asp-controller="Productos" asp-action="Index" class="fav-link">Empanaditas chinas de carne</a></div>
+        </div>
+        <div class="fav-item col-7 offset-1 px-0">
+            <img src="~/img/fav_tempura.png" alt="langostinos fritos" style="width: 100%; height:100%"/>
+            <div class="fav-text"> <a asp-area="" asp-controller="Productos" asp-action="Index" class="fav-link">Langostinos rebozados en panko fritos con salsa de tamarindo</a></div>
+        </div>  
+     </div>
+</div>
+
+<div class="complete-images">
+    <div class="call-to-action">
+        <div class="call-to-action-content">
+            <p class="call-to-action-text">Hoy <span class="yellow-text">DDD</span> atendemos de CCC por WhatsApp <span class="yellow-text">+541140044004</span></p>
+        </div>
+        <img src="~/img/delivery_guy.png" alt="delivery" class="call-to-action-image">
+    </div>
+</div>
+
+
+<div class="title">
+    <h2>Nuestros locales</h2>
+</div>
+    <div class="row g-4">
+        <div class="col-md-3">
+            <div class="card">
+              <img src="~/img/local_palermo.png" class="card-img-top" alt="local de palermo">
+              <div class="card-body">
+                    <h5 class="card-title"> <a asp-area="" asp-controller="Reservas" asp-action="Index" class="fav-link" >PALERMO </a></h5>
+                <p class="card-text">Alto Palermo local 1</p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card">
+              <img src="~/img/local_recoleta.png" class="card-img-top" alt="local de recoleta">
+              <div class="card-body">
+                    <h5 class="card-title"><a asp-area="" asp-controller="Reservas" asp-action="Index" class="fav-link" >RECOLETA</a></h5>
+                <p class="card-text">Callao 986</p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card">
+              <img src="~/img/local_belgrano.png" class="card-img-top" alt="local de belgrano">
+              <div class="card-body">
+                    <h5 class="card-title"><a asp-area="" asp-controller="Reservas" asp-action="Index" class="fav-link">BELGRANO</a></h5>
+                <p class="card-text">Av Monroe 2401</p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card">
+              <img src="~/img/local_caballito.png" class="card-img-top" alt="local de caballito">
+              <div class="card-body">
+                    <h5 class="card-title"><a asp-area="" asp-controller="Reservas" asp-action="Index" class="fav-link">CABALLITO</a></h5>
+                <p class="card-text">Av Acoyte 234</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+<div class="horarios">
+    <p><strong>Lunes a viernes de 11 a 15hs y de 18 a 23.30hs. Sabado y domingo de 17 a 0hs.</strong></p>
+</div>
+
+

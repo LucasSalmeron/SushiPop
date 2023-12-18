@@ -1,0 +1,155 @@
+﻿@model SushiPOP_YA1A_2C2023_G2.DTO.Productos.CrearProductoDTO;
+@{
+    ViewData["Title"] = "Crear un Producto";
+}
+
+<h1>Crear un Producto</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" class="was-validated" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-3">
+                <label asp-for="Nombre" class="form-label"></label>
+                <input asp-for="Nombre" maxlength="100" class="form-control" placeholder="Nombre" required />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Descripcion" class="form-label"></label>
+                <textarea asp-for="Descripcion" minlength="20" maxlength="250" class="form-control" placeholder="Descripcion" required></textarea>
+                <span asp-validation-for="Descripcion" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Precio" class="form-label"></label>
+                <input asp-for="Precio" class="form-control" placeholder="Precio" required />
+                <span asp-validation-for="Precio" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Costo" class="form-label"></label>
+                <input asp-for="Costo" class="form-control" placeholder="Costo" required />
+                <span asp-validation-for="Costo" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Foto" class="form-label"></label>
+                <input asp-for="Foto" class="form-control" placeholder="URL de foto" aria-label="" />
+                <span asp-validation-for="Foto" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Stock" class="form-label"></label>
+                <input asp-for="Stock" class="form-control" placeholder="Stock" required />
+                <span asp-validation-for="Stock" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="CategoriaId" class="form-label"></label>
+                <select asp-for="CategoriaId" class="form-select" asp-items="ViewBag.CategoriaId" placeholder="Categoria" required></select>
+                <span asp-validation-for="CategoriaId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <a asp-action="Index">Back to List</a> |
+                <input type="button" value="Guardar" class="btn btn-primary" id="btn-submit" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+
+            $("form").validate({
+                onkeyup: function (element) {
+                    $(element).valid();
+                },
+                rules: {
+                    Nombre: {
+                        required: true,
+                        maxlength: 100,
+                        nombreUnico: true,
+                    },
+                    Descripcion: {
+                        required: true,
+                        minlength: 20,
+                        maxlength: 250
+                    },
+                    Precio: {
+                        required: true,
+                        number: true
+                    },
+                    Stock: {
+                        required: true,
+                        digits: true
+                    },
+                    Costo: {
+                        required: true,
+                        number: true
+                    },
+                    CategoriaId: {
+                        required: true
+                    }
+                },
+                messages: {
+                    Nombre: {
+                        required: "El campo Nombre es obligatorio",
+                        maxlength: "El campo Nombre no puede tener más de 100 caracteres"
+                    },
+                    Descripcion: {
+                        required: "El campo Descripción es obligatorio",
+                        minlength: "El campo Descripción debe tener al menos 20 caracteres",
+                        maxlength: "El campo Descripción no puede tener más de 250 caracteres"
+                    },
+                    Precio: {
+                        required: "El campo Precio es obligatorio",
+                        number: "Por favor, ingrese un valor numérico para el Precio"
+                    },
+                    Stock: {
+                        required: "El campo Stock es obligatorio",
+                        digits: "Por favor, ingrese un valor entero para el Stock"
+                    },
+                    Costo: {
+                        required: "El campo Costo es obligatorio",
+                        number: "Por favor, ingrese un valor numérico para el Costo"
+                    },
+                    CategoriaId: {
+                        required: "El campo Categoría es obligatorio"
+                    }
+                }
+            });
+            
+            // Agrega el método personalizado al validador
+            $.validator.addMethod("nombreUnico", function (value, element) {
+                var nombresInvalidos = @Html.Raw(Json.Serialize(ViewBag.Nombre));
+                return !nombresInvalidos.includes(value);
+            }, "El producto ingresado ya existe en stock.");
+
+
+            $("#Nombre").rules("add", { nombreUnico: true });
+
+
+            // Configura el evento click para el botón de submit
+            $("#btn-submit").on("click", function () {
+
+                var formValido = $("form").valid() && $("#Nombre").valid();
+
+                if (formValido) {
+                    $("form").submit();
+                }
+                else {
+                    if (!$("#Nombre").valid()) {
+                        $("#Nombre").focus();
+                    }
+                }
+            });
+        });
+
+    </script>
+}

@@ -1,0 +1,27 @@
+﻿@model SushiPop.Models.Categoria
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<div>
+    <h4>Categoria</h4>
+    <hr />
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <h5>“Desea borrar la categoría @Model.Nombre? Esta acción es irreversible!”</h5>
+
+    @if (ViewBag.CategoriaConProductos)
+    {
+        <div class="row">
+            <p class="text-danger">Esta categoría cuenta con productos relacionados, de manera que es imposible borrar la categoría. 
+                Modifique los productos relacionados para eliminar la relación.</p>
+        </div>
+    }
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Borrar" class="btn btn-danger" /> |
+        <a asp-action="Index">Salir</a>
+    </form>
+</div>
